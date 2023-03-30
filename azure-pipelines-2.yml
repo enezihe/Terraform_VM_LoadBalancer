@@ -17,4 +17,5 @@ steps:
     pwd
     cd Terraform_VM_LoadBalancer
     terraform init
+    terraform apply --auto-approve
   displayName: 'Run a multi-line script'
