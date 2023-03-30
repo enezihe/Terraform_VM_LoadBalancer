@@ -5,7 +5,15 @@ terraform {
       version = "3.49.0"
     }
   }
+  backend "azurerm" {
+    resource_group_name  = "nbt-rg-test"
+    storage_account_name = "nbtteststorage"
+    container_name       = "terraformserver"
+    key                  = "terraform.tfstate"
+  }
 }
+
+
 
 provider "azurerm" {
   # Configuration options
