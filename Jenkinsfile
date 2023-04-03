@@ -10,11 +10,10 @@ pipeline {
         stage('Create Infrastructure for the App') {
               steps {
                 sh 'az login --identity'
-                dir('/var/lib/jenkins/workspace/Terraform3/') {
-                    echo 'Creating Infrastructure for the App on AZURE Cloud'
-                    sh 'terraform init'
-                    sh 'terraform apply --auto-approve'
-                }
+                echo 'Creating Infrastructure for the App on AZURE Cloud'
+                sh 'terraform init'
+                sh 'terraform apply --auto-approve'
+
             }
         }
         stage('Destroy the Infrastructure') {
