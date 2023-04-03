@@ -18,7 +18,9 @@ terraform {
 provider "azurerm" {
   # Configuration options
   features {
+    
      }
+     use_msi = true
 }
 
 resource "azurerm_resource_group" "rg1" {
