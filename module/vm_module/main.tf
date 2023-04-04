@@ -3,7 +3,7 @@
 resource "azurerm_virtual_machine" "vm1" {
   name                  = var.vm_name
   location              = var.location
-  resource_group_name   = azurerm_resource_group.rg1.name
+  resource_group_name   = var.resource_group_name
   network_interface_ids = [azurerm_network_interface.main.id]
   vm_size               = "Standard_D2s_v3"
   delete_os_disk_on_termination = true
@@ -40,7 +40,7 @@ data "azurerm_ssh_public_key" "ssh_public_key" {
   resource_group_name = var.ssh_key_rg
   name                = var.ssh_key_name
 }
-resource "azurerm_network_interface" "nic" {
+resource "azurerm_network_interface" "main" {
   name                = "${var.vm_name}-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
