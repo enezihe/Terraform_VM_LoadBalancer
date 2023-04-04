@@ -11,11 +11,11 @@ variable "location" {
     default = "canadaeast"
 }
 
-variable "username" {
+variable "admin_username" {
   
 }
 
-variable "password" {
+variable "admin_password" {
   
 }
 

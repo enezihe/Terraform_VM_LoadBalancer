@@ -5,15 +5,15 @@ terraform {
       version = "3.49.0"
     }
   }
-  backend "azurerm" {
-    resource_group_name  = "nbt-rg-test"
-    storage_account_name = "nbtteststorage"
-    container_name       = "terraformserver"
-    key                  = "terraform.tfstate"
-    use_msi = true
-     subscription_id = "fe0a3c7c-f676-4acb-91ac-89f5008cbba1"
-     tenant_id = "1a93b615-8d62-418a-ac28-22501cf1f978"
-  }
+  # backend "azurerm" {
+  #   resource_group_name  = "nbt-rg-test"
+  #   storage_account_name = "nbtteststorage"
+  #   container_name       = "terraformserver"
+  #   key                  = "terraform.tfstate"
+  #   use_msi = true
+  #    subscription_id = "fe0a3c7c-f676-4acb-91ac-89f5008cbba1"
+  #    tenant_id = "1a93b615-8d62-418a-ac28-22501cf1f978"
+  # }
 }
 
 
@@ -22,9 +22,9 @@ provider "azurerm" {
   features {
     
      }
-     use_msi = true
-     subscription_id = "fe0a3c7c-f676-4acb-91ac-89f5008cbba1"
-     tenant_id = "1a93b615-8d62-418a-ac28-22501cf1f978"
+    #  use_msi = true
+    #  subscription_id = "fe0a3c7c-f676-4acb-91ac-89f5008cbba1"
+    #  tenant_id = "1a93b615-8d62-418a-ac28-22501cf1f978"
 }
 
 resource "azurerm_resource_group" "rg1" {
@@ -57,8 +57,8 @@ module "vm1" {
   source = "./module/vm_module"
   vm_name = "vm1"
   resource_group_name = azurerm_resource_group.rg1.name
-  username = "nbt00"
-  password = "Password1234"
+  admin_username = "nbt00"
+  admin_password = "Password1234"
   subnet_id = azurerm_subnet.subnet1.id
 }
 
@@ -66,8 +66,8 @@ module "vm2" {
   source = "./module/vm_module"
   vm_name = "vm2"
   resource_group_name = azurerm_resource_group.rg1.name
-  username = "nbt00"
-  password = "Password1234"
+  admin_username = "nbt00"
+  admin_password = "Password1234"
   subnet_id = azurerm_subnet.subnet2.id
 }
 
