@@ -187,35 +187,3 @@ resource "azurerm_network_interface_backend_address_pool_association" "bacend_as
   backend_address_pool_id = azurerm_lb_backend_address_pool.backendlb.id
 }
 
-resource "azurerm_virtual_machine_extension" "vm1-extensions" {
-  name                 = "vm01-ext-webserver"
-  virtual_machine_id   = module.vm1.vm_id
-  publisher            = "Microsoft.Compute"
-  type                 = "CustomScriptExtension"
-  type_handler_version = "1.10"
-
-  settings = <<SETTINGS
-    {
-        "commandToExecute": "powershell Add-WindowsFeature Web-Server"
-    }
-SETTINGS
-
-}
-resource "azurerm_virtual_machine_extension" "vm2-extensions" {
-  name                 = "vm01-ext-webserver"
-  virtual_machine_id   = module.vm2.vm_id
-  publisher            = "Microsoft.Compute"
-  type                 = "CustomScriptExtension"
-  type_handler_version = "1.10"
-
-  settings = <<SETTINGS
-    {
-        "commandToExecute": "powershell Add-WindowsFeature Web-Server"
-    }
-SETTINGS
-
-}
-
-
-
-
