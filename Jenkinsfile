@@ -4,7 +4,7 @@ pipeline {
         terraform 'terraform'
     }
     
-
+//
     stages {
 
         stage('Create Infrastructure for the App') {

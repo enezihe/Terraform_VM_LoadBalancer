@@ -1,29 +1,45 @@
 
 
-resource "azurerm_windows_virtual_machine" "vm" {
-  name                = var.vm_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  size                = "Standard_B1s"
-  admin_username      = var.username
-  admin_password      = var.password
-  network_interface_ids = [
-    azurerm_network_interface.nic.id,
-  ]
+resource "azurerm_virtual_machine" "vm1" {
+  name                  = var.vm_name
+  location              = var.location
+  resource_group_name   = azurerm_resource_group.rg1.name
+  network_interface_ids = [azurerm_network_interface.main.id]
+  vm_size               = "Standard_D2s_v3"
+  delete_os_disk_on_termination = true
+  delete_data_disks_on_termination = true
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
 
-  source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2019-Datacenter"
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
     version   = "latest"
   }
-}
+  storage_os_disk {
+    name              = "myosdisk1"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+  os_profile {
+    computer_name  = var.vm_name
+    admin_username = var.admin_username
+    admin_password = var.admin_password
+  }
+  os_profile_linux_config {
+    disable_password_authentication = true
+    ssh_keys {
+      path = "/home/${var.admin_username}/.ssh/authorized_keys"
+      key_data = data.azurerm_ssh_public_key.ssh_public_key.public_key
 
+  }
+}
+}
+data "azurerm_ssh_public_key" "ssh_public_key" {
+  resource_group_name = var.ssh_key_rg
+  name                = var.ssh_key_name
+}
 resource "azurerm_network_interface" "nic" {
   name                = "${var.vm_name}-nic"
   location            = var.location

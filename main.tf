@@ -17,9 +17,8 @@ terraform {
 }
 
 
-
+#configure Terraform to use managed Identity (MSI)
 provider "azurerm" {
-  # Configuration options
   features {
     
      }
@@ -88,6 +87,17 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  security_rule {
+    name                       = "rule_ssh"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
 }
 resource "azurerm_subnet_network_security_group_association" "ensg_subnet1" {
   subnet_id                 = azurerm_subnet.subnet1.id
@@ -139,6 +149,11 @@ resource "azurerm_lb_probe" "probelb" {
   name            = "http-running-probe"
   port            = 80
 }
+resource "azurerm_lb_probe" "ssh_probe" {
+  loadbalancer_id = azurerm_lb.lb.id
+  name            = "ssh-running-probe"
+  port            = 22
+}
 resource "azurerm_lb_rule" "rulelb" {
   loadbalancer_id                = azurerm_lb.lb.id
   name                           = "LBRule"
@@ -147,6 +162,17 @@ resource "azurerm_lb_rule" "rulelb" {
   backend_port                   = 80
   frontend_ip_configuration_name = "PublicIPAddress"
   probe_id = azurerm_lb_probe.probelb.id
+  backend_address_pool_ids=[ azurerm_lb_backend_address_pool.backendlb.id ]
+
+}
+resource "azurerm_lb_rule" "ssh-rule" {
+  loadbalancer_id                = azurerm_lb.lb.id
+  name                           = "ssh-rule"
+  protocol                       = "Tcp"
+  frontend_port                  = 22
+  backend_port                   = 22
+  frontend_ip_configuration_name = "PublicIPAddress"
+  probe_id = azurerm_lb_probe.ssh_probe.id
   backend_address_pool_ids=[ azurerm_lb_backend_address_pool.backendlb.id ]
 
 }
