@@ -60,6 +60,7 @@ module "vm1" {
   admin_username = "nbt00"
   admin_password = "Password1234"
   subnet_id = azurerm_subnet.subnet1.id
+  custom_data = file("userdata.sh")
 }
 
 module "vm2" {
@@ -69,6 +70,8 @@ module "vm2" {
   admin_username = "nbt00"
   admin_password = "Password1234"
   subnet_id = azurerm_subnet.subnet2.id
+  custom_data = file("userdata.sh")
+
 }
 
 resource "azurerm_network_security_group" "nsg" {

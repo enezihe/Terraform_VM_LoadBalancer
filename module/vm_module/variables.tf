@@ -30,3 +30,6 @@ variable "ssh_key_rg" {
   default = "nbt-rg-test"
 }
 
+variable "custom_data" {
+  
+}
